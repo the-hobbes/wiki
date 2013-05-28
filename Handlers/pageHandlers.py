@@ -3,14 +3,22 @@
 	Also has more exotic methods for wiki page editing.
 '''
 from common import *
+import Models.datastore as datastore
 
 class MainHandler(Handler):
 	'''
 		main page renderer
 	'''
 	def get(self):
-		# self.write('Hello world!')
-		self.render("main.html")
+		cookieStr = self.request.cookies.get('user_id')
+
+		if cookieStr:
+			# user is logged in
+			self.render("main.html", logout = "Logout |", edit = "Edit")
+		else:
+			# no user logged in
+			self.render("main.html", loggedIn = "Login |", signup = "Signup |")
+
 
 class EditPage(Handler):
 	'''
@@ -65,7 +73,7 @@ class Signup(Handler):
 				u.put()
 
 				self.login(u)
-				self.redirect("/welcome")
+				self.redirect("/")
 
 class Login(Handler):
 	'''
@@ -84,7 +92,7 @@ class Login(Handler):
 		if u:
 			# set secure cookie and redirect to blog
 			self.login(u)
-			self.redirect('/welcome')
+			self.redirect('/')
 		else:
 			msg = "Invalid Login"
 			self.render("login.html", error = msg)
