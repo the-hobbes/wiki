@@ -56,3 +56,9 @@ class User(db.Model):
         if u and h.validatePassword(name, pw, u.pw_hash):
             # if the user exists in the datastore and the password hashes to the right value, return the user object
             return u
+
+class Wiki(db.Model):
+    '''
+        wikiPage entity. 
+    '''
+    
