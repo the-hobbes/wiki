@@ -9,7 +9,8 @@ class MainHandler(Handler):
 		main page renderer
 	'''
 	def get(self):
-		self.write('Hello world!')
+		# self.write('Hello world!')
+		self.render("main.html")
 
 class EditPage(Handler):
 	'''
@@ -27,6 +28,7 @@ class WikiPage(Handler):
 	'''
 	def get(self, page):
 		self.write('WikiPage accessed')
+		# must check the database for the presence of the page, and if it doesn't exist redirect to /_edit/page
 
 	def post(self):
 		pass

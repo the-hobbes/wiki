@@ -3,7 +3,7 @@
 # 
 # this file collects all of the datastore entities needed by the blog. 
 from google.appengine.ext import db
-import Handlers.hashing
+import Handlers.hashing as hashing
 import Handlers.common
 
 class User(db.Model):
