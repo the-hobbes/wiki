@@ -6,7 +6,7 @@ body{
 #main{
 	width:900px;
 	margin:0px auto;
-	height:500px;
+	height:600px;
 	background-color: white;
 	padding:10px;
 	border-radius: 5px;
@@ -32,4 +32,11 @@ a:active {text-decoration:none;}
 .error{
 	color: red;
 	font-weight: bold;
+}
+
+textarea{
+	width:400px;
+	height:400px;
+	background-color: #D6D6D6;
+	margin-left:250px;
 }

@@ -25,10 +25,41 @@ class EditPage(Handler):
 		when you want to edit a wiki page
 	'''
 	def get(self, page):
-		self.write('edit page accessed')
+		# check and see if the page is already in the database. if it is, get the text.
+		wiki_entry = Wiki.by_title(page)
+		text=""
+		if wiki_entry:
+			text = wiki_entry.text
 
-	def post(self):
-		pass
+		# if the user is logged in, let them edit the page
+		if self.user:
+			self.render('wiki.html', text=text, editable=True, page=page)
+		# if the user is not logged in, then show them the page if it exists
+		elif not self.user:
+			self.render('wiki.html', text=text)
+		# if the page doesn't exist and they aren't logged in, then direct them back to the homepage
+		else:
+			self.redirect('/')
+
+	def post(self, page):
+		# self.write("you posted.")
+		content = str(self.request.get('content'))
+
+		# if things don't pass validation, then spit out the error and rerender the page
+		if (not content):
+			error = "You need some content there, bub."
+			self.render('wiki.html', text=content, editable=True, error=error, page=page)		
+
+		# if everything passes validation, then update the datastore and render the page
+		else:
+			# success, interact with the datastore entity Posts, creating a new row with the right information information
+			w = Wiki(title=page, text=content)
+			# send the new wiki to the database, and get the id of the wiki you just made. 
+			# should also update the cache
+			# wikiId = addPost(p)
+			w.put()
+			self.redirect(page)
+		
 
 class WikiPage(Handler):
 	'''
@@ -38,6 +69,7 @@ class WikiPage(Handler):
 		# self.write('WikiPage accessed')
 		# must check the database for the presence of the page
 		wiki_entry = Wiki.by_title(page)
+		text=""
 		# if the page exists, render that page
 		if wiki_entry:
 			text = wiki_entry.text
@@ -48,9 +80,6 @@ class WikiPage(Handler):
 		# if the page doesn't exist but they are not logged in, direct them to the home page
 		else:
 			self.redirect('/')
-
-	def post(self):
-		pass
 
 class Signup(Handler):
 	'''

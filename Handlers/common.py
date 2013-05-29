@@ -170,7 +170,7 @@ def ageGet(key):
 
 	return val, age
 
-def addPost(post):
+def addWiki(wiki):
 	'''
 		This is called every time a new post is submitted, from newposthandler. 
 		Parameters:
@@ -179,14 +179,14 @@ def addPost(post):
 			the string representation of the unique key identifying the post
 	'''
 	# add to datastore
-	post.put()
+	wiki.put()
 	time.sleep(1) # uuugh need this to give the datastore time to catch up, so that when we add stuff to the cache there is stuff to add.
-	# overwrite the cache, as we have a new post
-	getPosts(update=True) 
+	# overwrite the cache, as we have a new wiki
+	getWiki(update=True) 
 	# return the id
-	return str(post.key().id())
+	return str(wiki.key().id())
 
-def getPosts(update = False):
+def getWiki(update = False):
 	'''
 		This is called to actually run the database query and store those results in the cache. The cache is updated (which
 			means the database is queried again) only when something has changed, as indicated by the update flag being turned
@@ -196,17 +196,17 @@ def getPosts(update = False):
 	'''
 	# using procedural language (not gql) lookup all the posts
 	# q = Posts.all().order('-time').fetch(limit = 50)
-	q = Posts.all().order('-time').fetch(limit = 50)
+	q = Wiki.all().order('-time').fetch(limit = 50)
 	key = "BLOG"
 
 	# lookup key in memcache
-	posts, age = ageGet(key)
+	wikis, age = ageGet(key)
 	# if we must refresh memcache data, do it
 	if update or posts is None:
-		posts = list(q)
-		ageSet(key, posts)
+		wikis = list(q)
+		ageSet(key, wikis)
 
-	return posts, age
+	return wikis, age
 
 def ageStr(age):
 	'''

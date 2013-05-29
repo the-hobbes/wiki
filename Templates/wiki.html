@@ -3,7 +3,7 @@
 		<title>Wiki, CS253 Udacity</title>
 		<meta name="description" content="">
 		
-		<link type="text/css" rel="stylesheet" href="css/style.css" />
+		<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	</head>
 
 	<body>
@@ -13,9 +13,26 @@
 			<span><a href="/logout">{{logout}}</a></span>
 			<span>{{edit}}</span>
 		</div> <!-- end tools -->
+		{% if editable %}
+			{% include "editMenu.html" %}
+		{% else %}
+			{% include "regularMenu.html %}
+		{% endif %}
 
 		<div id='main'>
-			{{text}}
+			{% if editable%}
+				<form method="post">
+					<textarea name="content" >{{text | safe}} </textarea>
+					<hr>
+					<div style="margin-left:390px;">
+				        <input type="submit">
+				        <input type="button" value="Cancel" onclick="window.location.href='/';" />
+				    </div>
+		      </form>
+			{% else %}
+				<div>{{text}}</div>
+			{% endif %}
+			<div class="error" style="margin-left:290px; margin-top:5px;">{{error}}</div>
 		</div> <!-- end main -->
 		
 		<!-- JavaScript at the bottom for fast page loading -->
