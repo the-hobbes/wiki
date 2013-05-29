@@ -23,6 +23,7 @@ app = webapp2.WSGIApplication([ ('/', MainHandler),
 								('/login', Login),
 								('/logout', Logout),
 								('/_edit' + PAGE_RE, EditPage),
-								(PAGE_RE, WikiPage)
+								(PAGE_RE, WikiPage),
+								('/flush', Flush)
 								],
 								debug=True)

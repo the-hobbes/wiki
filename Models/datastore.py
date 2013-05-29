@@ -61,4 +61,22 @@ class Wiki(db.Model):
     '''
         wikiPage entity. 
     '''
-    
+    title = db.StringProperty(required = True)
+    text = db.StringProperty(required = True)
+    dateTime = db.DateTimeProperty(auto_now_add = True)
+
+    def wiki_key(group = 'default'):
+        # this creates the ancestor element in the database to store all the wiki's
+        return db.Key.from_path('wiki', group)
+
+    @classmethod
+    def by_id(cls, uid):
+        # looks up user by id
+        wKey = db.Key.from_path('wiki', 'default')
+        return Wiki.get_by_id(uid, parent = wKey)
+
+    @classmethod
+    def by_title(cls, title):
+        # looks up user by name. basically select * from user where name == name, and get() returns first instance
+        w = Wiki.all().filter('title =', title).get()
+        return w

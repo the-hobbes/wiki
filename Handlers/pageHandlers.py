@@ -35,8 +35,19 @@ class WikiPage(Handler):
 		when you want to view a wiki page
 	'''
 	def get(self, page):
-		self.write('WikiPage accessed')
-		# must check the database for the presence of the page, and if it doesn't exist redirect to /_edit/page
+		# self.write('WikiPage accessed')
+		# must check the database for the presence of the page
+		wiki_entry = Wiki.by_title(page)
+		# if the page exists, render that page
+		if wiki_entry:
+			text = wiki_entry.text
+			self.render('wiki.html', text=text)
+		# if the page doesn't exist, and they are logged in, direct them to the edit page
+		elif (not wiki_entry and self.user):
+			self.redirect('/_edit' + page)
+		# if the page doesn't exist but they are not logged in, direct them to the home page
+		else:
+			self.redirect('/')
 
 	def post(self):
 		pass
