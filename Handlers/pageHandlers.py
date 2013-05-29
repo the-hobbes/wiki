@@ -17,7 +17,7 @@ class MainHandler(Handler):
 			self.render("main.html", logout = "Logout |", edit = "Edit")
 		else:
 			# no user logged in
-			self.render("main.html", loggedIn = "Login |", signup = "Signup |")
+			self.render("main.html", loggedIn = "Login |", signup = "Signup ")
 
 
 class EditPage(Handler):
@@ -53,11 +53,18 @@ class EditPage(Handler):
 		# if everything passes validation, then update the datastore and render the page
 		else:
 			# success, interact with the datastore entity Posts, creating a new row with the right information information
-			w = Wiki(title=page, text=content)
-			# send the new wiki to the database, and get the id of the wiki you just made. 
-			# should also update the cache
-			# wikiId = addPost(p)
-			w.put()
+			wiki_entry=Wiki.by_title(page)
+			if wiki_entry:
+				# update the wiki entry
+				wiki_entry.text = content
+				wiki_entry.put()
+				time.sleep(1)
+			else:
+				# create a new entry
+				w = Wiki(title=page, text=content)
+				w.put()
+				time.sleep(1)
+
 			self.redirect(page)
 		
 
@@ -72,8 +79,11 @@ class WikiPage(Handler):
 		text=""
 		# if the page exists, render that page
 		if wiki_entry:
+			editMenu=False
+			if self.user:
+				editMenu=True
 			text = wiki_entry.text
-			self.render('wiki.html', text=text)
+			self.render('wiki.html', text=text, editMenu=editMenu, page=page)
 		# if the page doesn't exist, and they are logged in, direct them to the edit page
 		elif (not wiki_entry and self.user):
 			self.redirect('/_edit' + page)

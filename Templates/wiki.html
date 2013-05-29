@@ -7,16 +7,16 @@
 	</head>
 
 	<body>
-		<div id="tools">
-			<span><a href="/login">{{loggedIn}}</a></span>
-			<span><a href="/signup">{{signup}}</a></span>
-			<span><a href="/logout">{{logout}}</a></span>
-			<span>{{edit}}</span>
-		</div> <!-- end tools -->
-		{% if editable %}
-			{% include "editMenu.html" %}
+		{% if editMenu %}
+			<div id="tools">
+				<span><a href="/logout">Logout |</a></span>
+				<span><a href="/_edit{{page}}">Edit</span>
+			</div> <!-- end tools -->
 		{% else %}
-			{% include "regularMenu.html %}
+			<div id="tools">
+				<span><a href="/login">Log In |</a></span>
+				<span><a href="/signup">Signup</a></span>
+			</div> <!-- end tools -->
 		{% endif %}
 
 		<div id='main'>
@@ -25,10 +25,10 @@
 					<textarea name="content" >{{text | safe}} </textarea>
 					<hr>
 					<div style="margin-left:390px;">
-				        <input type="submit">
-				        <input type="button" value="Cancel" onclick="window.location.href='/';" />
-				    </div>
-		      </form>
+						<input type="submit">
+						<input type="button" value="Cancel" onclick="window.location.href='/';" />
+					</div>
+				</form>
 			{% else %}
 				<div>{{text}}</div>
 			{% endif %}
