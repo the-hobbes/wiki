@@ -1,0 +1,43 @@
+body{
+	font-family: Verdana, Helvetica, sans-serif;
+	background: url('../images/ticks.png');
+}
+
+#main{
+	width:900px;
+	margin:0px auto;
+	height:600px;
+	background-color: white;
+	padding:10px;
+	border-radius: 5px;
+	/*box-shadow: 5px 5px 5px #888888;*/
+	clear: both;
+}
+
+#tools{
+	float: right;
+	margin-right: 200px;
+	margin-bottom: 5px;
+	font-size: smaller;
+}
+
+.hidden{
+	display: none;
+}
+
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:none;}
+a:active {text-decoration:none;}
+
+.error{
+	color: red;
+	font-weight: bold;
+}
+
+textarea{
+	width:400px;
+	height:400px;
+	background-color: #D6D6D6;
+	margin-left:250px;
+}

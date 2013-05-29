@@ -6,6 +6,10 @@ from google.appengine.ext import db
 import logging
 import hashing
 from Models.datastore import *
+from google.appengine.api import memcache # import memcache
+import pickle
+from datetime import datetime, timedelta
+import time
 
 #set templating directory with jinja. NOTE that jinja escapes html because autoescape = True
 template_dir = os.path.join(os.path.dirname(__file__), '../Templates')
@@ -122,3 +126,15 @@ class Handler(webapp2.RequestHandler):
 		uid = self.read_secure_cookie('user_id')
 		# if the cookie exists, store the user object in the self.user variable, whose value is read from the datastore by the id
 		self.user = uid and User.by_id(int(uid[0]))
+
+# caching stuff
+class Flush(Handler):
+	'''
+		Handler class used to flush the memcache when /flush is visited.
+	'''
+
+	def get(self):
+		# completely clear out the cache
+		memcache.flush_all()
+		# redirect to home
+		self.redirect("/")

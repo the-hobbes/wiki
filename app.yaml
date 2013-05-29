@@ -5,16 +5,14 @@ api_version: 1
 threadsafe: yes
 
 handlers:
-
+- url: /css
+  static_dir: css
+- url: /images
+  static_dir: images
+- url: /js
+  static_dir: js
 - url: .*
   script: wiki.app
-
-- url: /Static/css
-  static_dir: css
-- url: /Static/img
-  static_dir: img
-- url: /Static/js
-  static_dir: js
 
 libraries:
 - name: webapp2

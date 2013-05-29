@@ -1,0 +1,43 @@
+<!doctype html>
+	<head>
+		<title>Wiki, CS253 Udacity</title>
+		<meta name="description" content="">
+		
+		<link type="text/css" rel="stylesheet" href="../css/style.css" />
+	</head>
+
+	<body>
+		{% if editMenu %}
+			<div id="tools">
+				<span><a href="/logout">Logout |</a></span>
+				<span><a href="/_edit{{page}}">Edit</span>
+			</div> <!-- end tools -->
+		{% else %}
+			<div id="tools">
+				<span><a href="/login">Log In |</a></span>
+				<span><a href="/signup">Signup</a></span>
+			</div> <!-- end tools -->
+		{% endif %}
+
+		<div id='main'>
+			{% if editable%}
+				<form method="post">
+					<textarea name="content" >{{text | safe}} </textarea>
+					<hr>
+					<div style="margin-left:390px;">
+						<input type="submit">
+						<input type="button" value="Cancel" onclick="window.location.href='/';" />
+					</div>
+				</form>
+			{% else %}
+				<div>{{text}}</div>
+			{% endif %}
+			<div class="error" style="margin-left:290px; margin-top:5px;">{{error}}</div>
+		</div> <!-- end main -->
+		
+		<!-- JavaScript at the bottom for fast page loading -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<!-- end scripts -->
+
+	</body>
+</html>
